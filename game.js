@@ -400,8 +400,9 @@ function ambientSounds() {
   }
 }
 
-// Main loop — fixed timestep so speed is monitor-refresh-rate independent
-const STEP_MS = 1000 / 60; // 60 logical updates per second
+// Main loop — fixed timestep driven by performance.now() (consistent across browsers)
+const STEP_MS = 1000 / 60;
+const MAX_CATCHUP_STEPS = 5;
 let lastTime = 0;
 let accumulator = 0;
 function step() {
@@ -424,16 +425,20 @@ function step() {
   ambientSounds();
   updateHUD();
 }
-function loop(now) {
-  if (!lastTime) lastTime = now;
+function loop() {
+  const now = performance.now();
+  if (lastTime === 0) lastTime = now;
   let delta = now - lastTime;
   lastTime = now;
-  if (delta > 250) delta = 250; // clamp after tab-switch
+  if (delta > 250) delta = 250;
   accumulator += delta;
-  while (accumulator >= STEP_MS) {
+  let steps = 0;
+  while (accumulator >= STEP_MS && steps < MAX_CATCHUP_STEPS) {
     step();
     accumulator -= STEP_MS;
+    steps++;
   }
+  if (accumulator > STEP_MS * MAX_CATCHUP_STEPS) accumulator = 0;
   draw();
   requestAnimationFrame(loop);
 }
