@@ -11,7 +11,9 @@ html, body {
 }
 #game-container {
   position: relative;
-  width: 100vw; height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -102,15 +104,15 @@ button:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 #000; }
 #dpad {
   display: none;
   flex: 0 0 auto;
-  width: 220px; height: 220px;
+  width: 180px; height: 180px;
   position: relative;
-  margin: 10px auto;
+  margin: 8px auto 16px;
   touch-action: none;
 }
 .dp-btn {
   position: absolute;
-  width: 70px; height: 70px;
-  font-size: 28px;
+  width: 56px; height: 56px;
+  font-size: 24px;
   padding: 0;
   margin: 0;
   background: rgba(60,120,60,0.85);
@@ -126,12 +128,12 @@ button:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 #000; }
   transform: translate(2px,2px);
   box-shadow: 1px 1px 0 #000;
 }
-.dp-btn[data-dir="up"]    { top: 0;    left: 75px; }
-.dp-btn[data-dir="left"]  { top: 75px; left: 0; }
-.dp-btn[data-dir="right"] { top: 75px; left: 150px; }
-.dp-btn[data-dir="down"]  { top: 150px; left: 75px; }
+.dp-btn[data-dir="up"]    { top: 0;    left: 62px; }
+.dp-btn[data-dir="left"]  { top: 62px; left: 0; }
+.dp-btn[data-dir="right"] { top: 62px; left: 124px; }
+.dp-btn[data-dir="down"]  { top: 124px; left: 62px; }
 @media (max-width: 900px), (pointer: coarse) {
   #dpad { display: block; }
-  #hud { font-size: 14px; padding: 4px 8px; }
+  #hud { font-size: 13px; padding: 3px 6px; }
   #overlay-text, #start-screen h1 { font-size: 32px; }
 }
