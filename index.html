@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Minecraft PacMan - Steve vs Zombies</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="game-container">
+  <div id="hud">
+    <div class="hud-item">SCORE: <span id="score">0</span></div>
+    <div class="hud-item">LEVEL: <span id="level">1</span></div>
+    <div class="hud-item" id="lives-container">LIVES: <span id="lives"></span></div>
+  </div>
+  <canvas id="game"></canvas>
+  <div id="overlay" class="hidden">
+    <div id="overlay-text">GAME OVER</div>
+    <button id="restart-btn">PLAY AGAIN</button>
+  </div>
+  <div id="start-screen">
+    <h1>STEVE vs ZOMBIES</h1>
+    <p>Collect carrots. Avoid zombies. Eat golden apples to hunt them!</p>
+    <p class="controls-hint">Arrows / WASD on desktop · Swipe or D-pad on mobile</p>
+    <button id="start-btn">START</button>
+  </div>
+  <div id="dpad">
+    <button class="dp-btn" data-dir="up">▲</button>
+    <button class="dp-btn" data-dir="left">◀</button>
+    <button class="dp-btn" data-dir="right">▶</button>
+    <button class="dp-btn" data-dir="down">▼</button>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
