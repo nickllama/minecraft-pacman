@@ -321,28 +321,19 @@ function draw() {
   }
 }
 
-// Draw Steve's eyes on top of sprite, pupils offset by movement direction
+// Draw Steve's eyes on top of sprite, pupils oscillate left<->right over time
 function drawSteveEyes() {
-  const s = CELL / 16; // texture pixel = s canvas px
-  const d = DIRS[steve.dir];
-  // eye white 2x2 boxes (cover the baked-in eye pixels)
+  const s = CELL / 16;
   const eyes = [ {x: 4, y: 6}, {x: 8, y: 6} ];
   ctx.fillStyle = "#ffffff";
   for (const e of eyes) {
     ctx.fillRect(steve.px + e.x * s, steve.py + e.y * s, 2 * s, 2 * s);
   }
-  // pupil offset within 2x2 box
-  let ox = 0, oy = 0;
-  if (d.x > 0) ox = 1;
-  else if (d.x < 0) ox = 0;
-  else ox = 0; // default left-side
-  if (d.y > 0) oy = 1;
-  else if (d.y < 0) oy = 0;
-  else oy = 0;
-  if (steve.dir === "none") { ox = 0; oy = 0; }
+  // oscillate 0 or 1 every ~500ms
+  const ox = Math.floor(Date.now() / 500) % 2 === 0 ? 0 : 1;
   ctx.fillStyle = "#1a3ea8";
   for (const e of eyes) {
-    ctx.fillRect(steve.px + (e.x + ox) * s, steve.py + (e.y + oy) * s, s, s);
+    ctx.fillRect(steve.px + (e.x + ox) * s, steve.py + e.y * s, s, s);
   }
 }
 
