@@ -416,26 +416,39 @@ function ambientSounds() {
   }
 }
 
-// Main loop
-function loop() {
-  if (gameRunning) {
-    moveEntity(steve, false);
-    checkPickups();
-    updateZombies();
-    checkCollisions();
-    if (powerMode) {
-      powerTimer--;
-      if (powerTimer <= 0) {
-        powerMode = false;
-        zombies.forEach(z => z.scared = false);
-      }
+// Main loop — fixed timestep so speed is monitor-refresh-rate independent
+const STEP_MS = 1000 / 60; // 60 logical updates per second
+let lastTime = 0;
+let accumulator = 0;
+function step() {
+  if (!gameRunning) return;
+  moveEntity(steve, false);
+  checkPickups();
+  updateZombies();
+  checkCollisions();
+  if (powerMode) {
+    powerTimer--;
+    if (powerTimer <= 0) {
+      powerMode = false;
+      zombies.forEach(z => z.scared = false);
     }
-    if (carrotsLeft <= 0) {
-      level++;
-      resetLevel(true);
-    }
-    ambientSounds();
-    updateHUD();
+  }
+  if (carrotsLeft <= 0) {
+    level++;
+    resetLevel(true);
+  }
+  ambientSounds();
+  updateHUD();
+}
+function loop(now) {
+  if (!lastTime) lastTime = now;
+  let delta = now - lastTime;
+  lastTime = now;
+  if (delta > 250) delta = 250; // clamp after tab-switch
+  accumulator += delta;
+  while (accumulator >= STEP_MS) {
+    step();
+    accumulator -= STEP_MS;
   }
   draw();
   requestAnimationFrame(loop);
