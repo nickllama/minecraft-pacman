@@ -311,12 +311,38 @@ function draw() {
   }
   // Steve
   ctx.drawImage(assets.steve, steve.px, steve.py, CELL, CELL);
+  drawSteveEyes();
   // Zombies
   for (const z of zombies) {
     if (z.dead) continue;
     const flash = powerMode && powerTimer < 120 && Math.floor(powerTimer / 10) % 2 === 0;
     const img = z.scared ? (flash ? assets.zombie : assets.zombie_scared) : assets.zombie;
     ctx.drawImage(img, z.px, z.py, CELL, CELL);
+  }
+}
+
+// Draw Steve's eyes on top of sprite, pupils offset by movement direction
+function drawSteveEyes() {
+  const s = CELL / 16; // texture pixel = s canvas px
+  const d = DIRS[steve.dir];
+  // eye white 2x2 boxes (cover the baked-in eye pixels)
+  const eyes = [ {x: 4, y: 6}, {x: 8, y: 6} ];
+  ctx.fillStyle = "#ffffff";
+  for (const e of eyes) {
+    ctx.fillRect(steve.px + e.x * s, steve.py + e.y * s, 2 * s, 2 * s);
+  }
+  // pupil offset within 2x2 box
+  let ox = 0, oy = 0;
+  if (d.x > 0) ox = 1;
+  else if (d.x < 0) ox = 0;
+  else ox = 0; // default left-side
+  if (d.y > 0) oy = 1;
+  else if (d.y < 0) oy = 0;
+  else oy = 0;
+  if (steve.dir === "none") { ox = 0; oy = 0; }
+  ctx.fillStyle = "#1a3ea8";
+  for (const e of eyes) {
+    ctx.fillRect(steve.px + (e.x + ox) * s, steve.py + (e.y + oy) * s, s, s);
   }
 }
 
