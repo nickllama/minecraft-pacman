@@ -1,29 +1,27 @@
 // Minecraft PacMan - Steve vs Zombies
 (() => {
-const CELL = 32;
-const COLS = 15;
-const ROWS = 17;
+const CELL = 40;
+const COLS = 13;
+const ROWS = 15;
 
 // Compact PacMan-style maze. Legend:
 // # wall, . carrot, o golden apple, space empty, P Steve spawn, Z zombie spawn
 const RAW_MAP = [
-  "###############",
-  "#......#......#",
-  "#o####.#.####o#",
-  "#.............#",
-  "#.####.#.####.#",
-  "#.#.........#.#",
-  "#.#.##.#.##.#.#",
-  "#...#..Z..#...#",
-  "    .#ZZZ#.    ",
-  "#...#..Z..#...#",
-  "#.#.##.#.##.#.#",
-  "#.#.........#.#",
-  "#.####.#.####.#",
-  "#.............#",
-  "#o####.#.####o#",
-  "#......P......#",
-  "###############",
+  "#############",
+  "#o....#....o#",
+  "#.###.#.###.#",
+  "#...........#",
+  "#.#.#####.#.#",
+  "#.#...Z...#.#",
+  "#.#.#ZZZ#.#.#",
+  "  ..#ZZZ#..  ",
+  "#.#.#####.#.#",
+  "#.#.......#.#",
+  "#.#.#####.#.#",
+  "#.....P.....#",
+  "#o###.#.###o#",
+  "#...........#",
+  "#############",
 ];
 
 // Parse map
@@ -204,7 +202,7 @@ function updateZombies() {
   for (const z of zombies) {
     if (z.dead) {
       // respawn at center
-      z.x = 7; z.y = 8; z.px = z.x*CELL; z.py = z.y*CELL;
+      z.x = 6; z.y = 7; z.px = z.x*CELL; z.py = z.y*CELL;
       z.dead = false; z.scared = false;
       z.dir = "up"; z.releaseAt = 60;
       continue;
@@ -462,8 +460,18 @@ document.addEventListener("keydown", e => {
 
 document.querySelectorAll(".dp-btn").forEach(btn => {
   const dir = btn.dataset.dir;
-  btn.addEventListener("touchstart", e => { e.preventDefault(); setDir(dir); }, {passive: false});
-  btn.addEventListener("mousedown", e => { e.preventDefault(); setDir(dir); });
+  const fire = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    initAudio();
+    if (!gameRunning && !document.getElementById("start-screen").classList.contains("hidden")) return;
+    setDir(dir);
+    btn.classList.add("pressed");
+    setTimeout(() => btn.classList.remove("pressed"), 120);
+  };
+  btn.addEventListener("pointerdown", fire);
+  btn.addEventListener("touchstart", fire, {passive: false});
+  btn.addEventListener("click", fire);
 });
 
 // Swipe

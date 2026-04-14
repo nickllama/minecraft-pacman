@@ -7,7 +7,7 @@ html, body {
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
 }
 #game-container {
   position: relative;
@@ -15,20 +15,20 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 10px;
 }
 #hud {
   width: 100%;
-  max-width: 700px;
+  flex: 0 0 auto;
   display: flex;
-  justify-content: space-between;
-  padding: 8px 16px;
+  justify-content: space-around;
+  padding: 6px 10px;
   font-size: 18px;
   font-weight: bold;
   color: #ffd700;
   text-shadow: 2px 2px 0 #000;
   letter-spacing: 1px;
+  background: #111;
+  border-bottom: 2px solid #333;
 }
 .hud-item { flex: 1; text-align: center; }
 #lives img {
@@ -37,20 +37,30 @@ html, body {
   image-rendering: pixelated;
   margin-left: 2px;
 }
+#game-wrap {
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 0;
+}
 #game {
   background: #000;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  border: 3px solid #444;
-  height: calc(100vh - 80px);
+  max-width: 100%;
+  max-height: 100%;
+  height: 100%;
   width: auto;
-  max-width: 100vw;
+  touch-action: none;
 }
 #overlay, #start-screen {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,34 +96,42 @@ button {
   cursor: pointer;
   letter-spacing: 2px;
   box-shadow: 4px 4px 0 #000;
+  touch-action: manipulation;
 }
 button:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 #000; }
 #dpad {
   display: none;
-  position: fixed;
-  bottom: 20px; left: 50%;
-  transform: translateX(-50%);
-  width: 180px; height: 180px;
-  z-index: 5;
+  flex: 0 0 auto;
+  width: 220px; height: 220px;
+  position: relative;
+  margin: 10px auto;
+  touch-action: none;
 }
 .dp-btn {
   position: absolute;
-  width: 60px; height: 60px;
-  font-size: 24px;
+  width: 70px; height: 70px;
+  font-size: 28px;
   padding: 0;
   margin: 0;
-  background: rgba(60,120,60,0.7);
-  border: 2px solid #1e4d1e;
+  background: rgba(60,120,60,0.85);
+  border: 3px solid #1e4d1e;
   color: #fff;
-  box-shadow: 2px 2px 0 #000;
+  box-shadow: 3px 3px 0 #000;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.dp-btn[data-dir="up"]    { top: 0;    left: 60px; }
-.dp-btn[data-dir="left"]  { top: 60px; left: 0; }
-.dp-btn[data-dir="right"] { top: 60px; left: 120px; }
-.dp-btn[data-dir="down"]  { top: 120px; left: 60px; }
+.dp-btn:active, .dp-btn.pressed {
+  background: rgba(100,180,100,0.95);
+  transform: translate(2px,2px);
+  box-shadow: 1px 1px 0 #000;
+}
+.dp-btn[data-dir="up"]    { top: 0;    left: 75px; }
+.dp-btn[data-dir="left"]  { top: 75px; left: 0; }
+.dp-btn[data-dir="right"] { top: 75px; left: 150px; }
+.dp-btn[data-dir="down"]  { top: 150px; left: 75px; }
 @media (max-width: 900px), (pointer: coarse) {
   #dpad { display: block; }
-  #game { height: calc(100vh - 260px); }
-  #hud { font-size: 14px; }
+  #hud { font-size: 14px; padding: 4px 8px; }
   #overlay-text, #start-screen h1 { font-size: 32px; }
 }
